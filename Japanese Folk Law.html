@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hanasaka Jiisan</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌸</text></svg>">
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family: 'Courier New', monospace;
+}
+
+body{
+overflow:hidden;
+background:black;
+color:white;
+height:100vh;
+}
+
+/* PIXEL EFFECT */
+.pixel{
+image-rendering: pixelated;
+}
+
+/* BACKGROUND */
+#background{
+position:fixed;
+width:100%;
+height:100%;
+top:0;
+left:0;
+background:linear-gradient(to bottom,#000000,#111122,#222244);
+overflow:hidden;
+transition:1.5s;
+z-index:-5;
+}
+
+/* STARS */
+.star{
+position:absolute;
+width:4px;
+height:4px;
+background:white;
+animation:twinkle 2s infinite alternate;
+}
+
+@keyframes twinkle{
+from{opacity:0.2;}
+to{opacity:1;}
+}
+
+/* CHERRY BLOSSOMS */
+.blossom{
+position:absolute;
+top:-20px;
+color:pink;
+font-size:20px;
+animation:fall linear infinite;
+}
+
+@keyframes fall{
+to{
+transform:translateY(110vh) rotate(360deg);
+}
+}
+
+/* MOON */
+#moon{
+position:absolute;
+top:60px;
+right:100px;
+width:120px;
+height:120px;
+background:#8db3ff;
+border-radius:50%;
+box-shadow:0 0 30px #8db3ff;
+}
+
+#moon::after{
+content:'';
+position:absolute;
+top:15px;
+left:35px;
+width:100px;
+height:100px;
+background:#111122;
+border-radius:50%;
+}
+
+/* SUN */
+.sun{
+background:#ffe28a !important;
+box-shadow:0 0 40px #ffe28a !important;
+}
+
+.sun::after{
+display:none;
+}
+
+/* BIRDS */
+.bird{
+position:absolute;
+font-size:30px;
+color:white;
+animation:fly 10s linear infinite;
+}
+
+@keyframes fly{
+from{
+transform:translateX(-100px);
+}
+to{
+transform:translateX(120vw);
+}
+}
+
+/* TOP TABS */
+.tabs{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+display:flex;
+background:#1a1a1a;
+padding:10px;
+gap:10px;
+z-index:100;
+border-bottom:4px solid #333;
+}
+
+.tab{
+padding:12px 25px;
+background:#2a2a2a;
+border:3px solid #555;
+cursor:pointer;
+font-size:20px;
+font-weight:bold;
+color:white;
+transition:0.3s;
+}
+
+.tab:hover{
+background:#444;
+}
+
+.active{
+background:#4455aa;
+}
+
+/* PAGES */
+.page{
+display:none;
+height:100vh;
+width:100%;
+justify-content:center;
+align-items:center;
+flex-direction:column;
+padding-top:80px;
+}
+
+.show{
+display:flex;
+}
+
+/* HOME PAGE */
+#title{
+font-size:90px;
+color:#191970;
+text-shadow:5px 5px #7ec8ff;
+margin-bottom:40px;
+text-align:center;
+}
+
+#proceedBtn{
+padding:25px 80px;
+font-size:35px;
+background:#191970;
+color:white;
+border:none;
+cursor:pointer;
+font-weight:bold;
+box-shadow:0 0 20px #7ec8ff;
+transition:0.3s;
+}
+
+#proceedBtn:hover{
+transform:scale(1.05);
+}
+
+/* BOOK */
+.book{
+width:75%;
+height:75%;
+background:#5a3b1f;
+border:12px solid #3b240f;
+display:flex;
+justify-content:center;
+align-items:center;
+position:relative;
+box-shadow:0 0 30px black;
+padding:40px;
+}
+
+.pageContent{
+background:#d9c7a2;
+width:100%;
+height:100%;
+padding:40px;
+overflow:auto;
+color:black;
+font-size:33px;
+line-height:1.7;
+font-weight:bold;
+position:relative;
+animation:pageTurn 0.4s;
+}
+
+@keyframes pageTurn{
+from{
+transform:rotateY(90deg);
+opacity:0;
+}
+to{
+transform:rotateY(0deg);
+opacity:1;
+}
+}
+
+/* IMAGE SPACE */
+.imageBox{
+width:100%;
+height:280px;
+margin-bottom:20px;
+display:flex;
+justify-content:center;
+align-items:center;
+background:#eee;
+padding:12px;
+
+/* WOOD FRAME */
+border:14px solid #5c3a1e;
+box-shadow:
+inset 0 0 0 4px #8b5a2b,
+0 0 15px rgba(0,0,0,0.5);
+}
+
+/* IMAGE FIT */
+.imageBox img{
+width:100%;
+height:100%;
+object-fit:contain;
+display:block;
+}
+
+/* NEXT BUTTON */
+#nextBtn{
+position:absolute;
+bottom:15px;
+right:20px;
+padding:15px 25px;
+font-size:24px;
+background:#191970;
+color:white;
+border:none;
+cursor:pointer;
+}
+
+/* SOURCES */
+#sources{
+font-size:35px;
+text-align:center;
+padding:40px;
+line-height:2;
+}
+
+/* HOME RETURN */
+#returnHome{
+margin-top:20px;
+padding:20px 50px;
+font-size:25px;
+background:#191970;
+color:white;
+border:none;
+cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+
+<div id="background"></div>
+<div id="moon"></div>
+
+<div class="tabs">
+<div class="tab active" onclick="showPage('home')">Home Page</div>
+<div class="tab" onclick="showPage('legend')">Legend</div>
+<div class="tab" onclick="showPage('sourcesPage')">Sources</div>
+</div>
+
+<!-- HOME -->
+<div id="home" class="page show">
+<h1 id="title">Hanasaka Jiisan</h1>
+<p style="text-align: center; font-weight: bold; margin-bottom: 20px;">
+  This legend comes from many mountain villages in Japan, passed down from many generations, not generally having a specific location or date. It is estimated to be from the Edo period (1603 to 1868).
+</p>
+<button id="proceedBtn">Proceed To Legend</button>
+</div>
+
+<!-- LEGEND -->
+<div id="legend" class="page">
+
+<div class="book">
+<div class="pageContent" id="bookText"></div>
+<button id="nextBtn">Next Page</button>
+</div>
+
+</div>
+
+<!-- SOURCES -->
+<div id="sourcesPage" class="page">
+<div id="sources">
+<h1>Sources</h1>
+<br>
+<p>https://web-japan.org/kidsweb/folk/hanasaka/hanasaka05.html for images and information for me to write text.</p>
+<p>--</p>
+<p>Cluade AI to help me build website</p>
+<p>--</p>
+<p>My Brain AM)RN$Y%</p>
+<br>
+<button id="returnHome">Return Home</button>
+</div>
+</div>
+
+<script>
+
+/* FALLING BLOSSOMS */
+for(let i=0;i<35;i++){
+
+let blossom=document.createElement("div");
+blossom.classList.add("blossom");
+blossom.innerHTML="🌸";
+
+blossom.style.left=Math.random()*100+"vw";
+blossom.style.animationDuration=(5+Math.random()*8)+"s";
+blossom.style.fontSize=(15+Math.random()*20)+"px";
+
+document.body.appendChild(blossom);
+}
+
+/* STARS */
+for(let i=0;i<120;i++){
+
+let star=document.createElement("div");
+star.classList.add("star");
+
+star.style.left=Math.random()*100+"vw";
+star.style.top=Math.random()*100+"vh";
+star.style.animationDuration=(1+Math.random()*3)+"s";
+
+document.body.appendChild(star);
+}
+
+/* BIRDS */
+function createBirds(){
+
+for(let i=0;i<6;i++){
+
+let bird=document.createElement("div");
+bird.classList.add("bird");
+bird.innerHTML="";
+
+bird.style.top=Math.random()*300+"px";
+bird.style.animationDelay=(Math.random()*10)+"s";
+
+document.body.appendChild(bird);
+}
+}
+
+/* STORY PAGES */
+const pages=[
+
+`<div class="imageBox">
+<img src="1 jap.png">
+</div>
+
+In a remote village on the face of a mountain in Japan lived a honourable couple consisting of a man and his wife. The elderly man was clearing the snow from his field one day when a White, fluffy puppy came bolting in tears toward him. The puppy had been mistreated and abused by the greedy, heartless neighbour living next door in the field over. "Oh you poor thing," the man exclaimed. The man took the puppy welcoming it to their home, and named the puppy "Shiro". In Japanese this translates to the colour white.`,
+
+`<div class="imageBox">
+<img src=" jap.png">
+</div>
+
+The elderly couple loved Shiro with all their heart, in return the thankful puppy showed great affection toward the man and wife. The dog helped the man on the field everyday with all the difficult tasks. Shiro ate and continued to eat, then growing into a large sized dog.`,
+
+`<div class="imageBox">
+<img src="2 jap.png">
+</div>
+
+One day, Shiro then led the couple up the mountain to the point, then barked excitedly, the dog singling to dig here. As the man confusingly began to dig, to his amazement, pure gold coins started mounding from the hole.`,
+
+`<div class="imageBox">
+<img src="3 jap.png">
+</div>
+
+"Let me borrow Shiro!" The neighbour yelled with jealousy. Shiro was then snatched back from the kind couple forcing him to show the greedy man the gold. "Where's the gold!!!!"
+Frightened Shiro began to whimper. "Ahhhh so its here." He began to dig, but instead of the coins he dreuled for garbage and critters began surrounding the man. "HOW DARE YOU" the neighbour said furiously then brutally murders Shiro.`,
+
+`<div class="imageBox">
+<img src="4 jap.png">
+</div>
+
+In severe grief they decided to dig a grave for their beloved dog. Upon Shiro being buried a tree sprouted. The next day the tree had matured towering into the sky. The man remembered Shiro liked rice cakes, so the man chopped the tree and made a mortar out of his bare hands. As they were pounding the rice in turned into gold coins once again.`,
+
+`<div class="imageBox">IMAGE SPACE</div>
+The greedy couple then stole the mortar then returning to their house to create rice cakes. Instead of gold coins once again it turned into a slushy, mud right before his eyes. "what on earth," cried the old man. Then he takes an axe and chucks the wood scarps into the bon fire. The honest old man then took the ashes, taking it back to their land sprinkling it over Shiro's grave. The ashes then got picked up by a magical gust of wind reviving dead trees one after another. The trees then flourish with wonderful cherry flowers.`,
+
+
+`<div class="imageBox">
+<img src="5 jap.png">
+</div>
+The king hears this and then invited the wife over to his palace. The king than asks to demonstrate this magic then she tosses the ashes and it revives all the shrivelled trees then flowering with cherry flowers once again. You are the greatest flower boomer of Japan. Then the greedy old man heard and brang his left over ashes from the bonfire tossing the ashes to show the king that he is the best. Instead of his dreamed tittle the ashes go into the kings eyes, mouth and nose choking the royal highness. The greedy couple then gets tossed into a prison cell along with his wife.`,
+
+`<div class="imageBox">IMAGE SPACE</div>
+This story teaches kids that greed is never the way to go and kindness is the right path to follow as it rewards you.
+<br><br>
+<button onclick="showPage('returnHome')">Proceed To Home Page</button>`
+
+];
+
+let currentPage=0;
+
+const bookText=document.getElementById("bookText");
+
+function updateBook(){
+bookText.innerHTML=pages[currentPage];
+
+if(currentPage===pages.length-1){
+
+document.getElementById("returnHome").onclick=function(){
+showPage("home");
+};
+
+}
+}
+
+updateBook();
+
+/* NEXT PAGE */
+document.getElementById("nextBtn").onclick=function(){
+
+currentPage++;
+
+if(currentPage>=pages.length){
+currentPage=0;
+}
+
+updateBook();
+};
+
+/* PAGE SWITCHING */
+function showPage(page){
+
+document.querySelectorAll(".page").forEach(p=>{
+p.classList.remove("show");
+});
+
+document.getElementById(page).classList.add("show");
+
+document.querySelectorAll(".tab").forEach(t=>{
+t.classList.remove("active");
+});
+
+if(page==="home"){
+document.querySelectorAll(".tab")[0].classList.add("active");
+}
+
+if(page==="legend"){
+document.querySelectorAll(".tab")[1].classList.add("active");
+currentPage=0;
+updateBook();
+
+document.getElementById("background").style.background=
+"linear-gradient(to bottom,#777,#999,#bbb)";
+
+document.getElementById("moon").classList.add("sun");
+
+createBirds();
+
+document.querySelectorAll(".star").forEach(s=>{
+s.style.display="none";
+});
+
+}
+
+if(page==="sourcesPage"){
+document.querySelectorAll(".tab")[2].classList.add("active");
+}
+
+if(page==="home"){
+
+document.getElementById("background").style.background=
+"linear-gradient(to bottom,#000000,#111122,#222244)";
+
+document.getElementById("moon").classList.remove("sun");
+
+document.querySelectorAll(".star").forEach(s=>{
+s.style.display="block";
+});
+}
+}
+
+/* BUTTONS */
+document.getElementById("proceedBtn").onclick=function(){
+showPage("legend");
+};
+
+document.getElementById("returnHome").onclick=function(){
+showPage("home");
+};
+
+</script>
+
+</body>
+</html>
